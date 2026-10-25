@@ -1,0 +1,17 @@
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.suo
+*.userprefs
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+*.log
+*.tmp
+.idea/
+.vscode/
+packages/
+TestResults/
+~$*
