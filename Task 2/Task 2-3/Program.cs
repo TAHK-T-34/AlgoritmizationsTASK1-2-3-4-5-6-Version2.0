@@ -4,6 +4,10 @@ namespace Task_2_3
 {
     internal static class Program
     {
+        /// <summary>
+        /// Точка входа в программу.
+        /// </summary>
+        /// <param name="args">Аргументы командной строки.</param>
         static void Main(string[] args)
         {
             double a = GetPositiveNumber("Введите сторону a внутреннего прямоугольника = ");
@@ -21,6 +25,11 @@ namespace Task_2_3
             }
         }
 
+        /// <summary>
+        /// Запрашивает положительное вещественное число с проверкой ввода.
+        /// </summary>
+        /// <param name="message">Сообщение пользователю.</param>
+        /// <returns>Положительное число.</returns>
         static double GetPositiveNumber(string message)
         {
             while (true)
@@ -34,6 +43,15 @@ namespace Task_2_3
             }
         }
 
+        /// <summary>
+        /// Проверяет, помещается ли прямоугольник a x b в прямоугольник c x d
+        /// при параллельных сторонах (обе ориентации).
+        /// </summary>
+        /// <param name="a">Сторона a.</param>
+        /// <param name="b">Сторона b.</param>
+        /// <param name="c">Сторона c.</param>
+        /// <param name="d">Сторона d.</param>
+        /// <returns>true, если помещается.</returns>
         static bool CanFit(double a, double b, double c, double d)
         {
             bool straight = a <= c && b <= d;
