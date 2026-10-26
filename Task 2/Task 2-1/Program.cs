@@ -4,12 +4,28 @@ namespace Task_2_1
 {
     internal static class Program
     {
+        private const int MinSides = 3;
+        private const double PyramidFactor = 0.5;
+        private const string InputError = "Некорректный ввод.";
+
         /// <summary>
         /// Тип вычисляемой фигуры.
         /// </summary>
         enum Figure
         {
+            /// <summary>
+            /// Фигура не выбрана.
+            /// </summary>
+            None = 0,
+
+            /// <summary>
+            /// Правильная призма.
+            /// </summary>
             Prism = 1,
+
+            /// <summary>
+            /// Правильная пирамида.
+            /// </summary>
             Pyramid = 2
         }
 
@@ -19,76 +35,94 @@ namespace Task_2_1
         /// <param name="args">Аргументы командной строки.</param>
         static void Main(string[] args)
         {
-            Console.WriteLine("1 - боковая поверхность правильной призмы");
-            Console.WriteLine("2 - боковая поверхность правильной пирамиды");
+            Console.WriteLine($"{(int)Figure.Prism} - боковая поверхность правильной призмы");
+            Console.WriteLine($"{(int)Figure.Pyramid} - боковая поверхность правильной пирамиды");
 
-            Figure figure = GetFigure();
-            int sides = GetSides();
-            double side = GetPositiveNumber("Введите сторону основания = ");
+            Figure figure = ParseFigure(ReadInput("Выберите вариант: "));
+            if (figure == Figure.None)
+            {
+                Console.WriteLine(InputError);
+                return;
+            }
+
+            if (!TryParseSides(ReadInput("Введите число сторон основания = "), out int sides))
+            {
+                Console.WriteLine(InputError);
+                return;
+            }
+
+            if (!TryParsePositive(ReadInput("Введите сторону основания = "), out double side))
+            {
+                Console.WriteLine(InputError);
+                return;
+            }
 
             switch (figure)
             {
                 case Figure.Prism:
-                    double height = GetPositiveNumber("Введите высоту призмы = ");
+                    if (!TryParsePositive(ReadInput("Введите высоту призмы = "), out double height))
+                    {
+                        Console.WriteLine(InputError);
+                        return;
+                    }
                     Console.WriteLine($"Площадь боковой поверхности = {GetPrismArea(sides, side, height)}");
                     break;
                 case Figure.Pyramid:
-                    double apothem = GetPositiveNumber("Введите апофему пирамиды = ");
+                    if (!TryParsePositive(ReadInput("Введите апофему пирамиды = "), out double apothem))
+                    {
+                        Console.WriteLine(InputError);
+                        return;
+                    }
                     Console.WriteLine($"Площадь боковой поверхности = {GetPyramidArea(sides, side, apothem)}");
                     break;
             }
         }
 
         /// <summary>
-        /// Запрашивает у пользователя выбор фигуры.
-        /// </summary>
-        /// <returns>Выбранная фигура.</returns>
-        static Figure GetFigure()
-        {
-            while (true)
-            {
-                Console.Write("Выберите вариант (1 или 2): ");
-                if (int.TryParse(Console.ReadLine(), out int value) && Enum.IsDefined(typeof(Figure), value))
-                {
-                    return (Figure)value;
-                }
-                Console.WriteLine("Некорректный выбор.");
-            }
-        }
-
-        /// <summary>
-        /// Запрашивает число сторон основания.
-        /// </summary>
-        /// <returns>Число сторон, не меньшее 3.</returns>
-        static int GetSides()
-        {
-            while (true)
-            {
-                Console.Write("Введите число сторон основания = ");
-                if (int.TryParse(Console.ReadLine(), out int value) && value >= 3)
-                {
-                    return value;
-                }
-                Console.WriteLine("Нужно целое число не меньше 3.");
-            }
-        }
-
-        /// <summary>
-        /// Запрашивает положительное вещественное число с проверкой ввода.
+        /// Считывает строку с клавиатуры.
         /// </summary>
         /// <param name="message">Сообщение пользователю.</param>
-        /// <returns>Положительное число.</returns>
-        static double GetPositiveNumber(string message)
+        /// <returns>Введённая строка.</returns>
+        static string ReadInput(string message)
         {
-            while (true)
+            Console.Write(message);
+            return Console.ReadLine();
+        }
+
+        /// <summary>
+        /// Преобразует строку в выбранную фигуру.
+        /// </summary>
+        /// <param name="input">Введённая строка.</param>
+        /// <returns>Выбранная фигура или Figure.None, если ввод некорректен.</returns>
+        static Figure ParseFigure(string input)
+        {
+            if (int.TryParse(input, out int value) && Enum.IsDefined(typeof(Figure), value))
             {
-                Console.Write(message);
-                if (double.TryParse(Console.ReadLine(), out double value) && value > 0)
-                {
-                    return value;
-                }
-                Console.WriteLine("Нужно положительное число.");
+                return (Figure)value;
             }
+            return Figure.None;
+        }
+
+        /// <summary>
+        /// Проверяет и преобразует строку в число сторон основания.
+        /// </summary>
+        /// <param name="input">Введённая строка.</param>
+        /// <param name="sides">Число сторон основания.</param>
+        /// <returns>true, если число корректно.</returns>
+        static bool TryParseSides(string input, out int sides)
+        {
+            return int.TryParse(input, out sides) && sides >= MinSides;
+        }
+
+        /// <summary>
+        /// Проверяет и преобразует строку в положительное вещественное число.
+        /// </summary>
+        /// <param name="input">Введённая строка.</param>
+        /// <param name="value">Полученное число.</param>
+        /// <returns>true, если число корректно и положительно.</returns>
+        static bool TryParsePositive(string input, out double value)
+        {
+            return double.TryParse(input, out value) && value > 0;
         }
 
         /// <summary>
@@ -112,7 +146,7 @@ namespace Task_2_1
         /// <returns>Площадь боковой поверхности.</returns>
         static double GetPyramidArea(int sides, double side, double apothem)
         {
-            return 0.5 * sides * side * apothem;
+            return PyramidFactor * sides * side * apothem;
         }
     }
 }
