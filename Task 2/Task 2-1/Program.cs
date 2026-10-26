@@ -4,12 +4,19 @@ namespace Task_2_1
 {
     internal static class Program
     {
+        /// <summary>
+        /// Тип вычисляемой фигуры.
+        /// </summary>
         enum Figure
         {
             Prism = 1,
             Pyramid = 2
         }
 
+        /// <summary>
+        /// Точка входа в программу.
+        /// </summary>
+        /// <param name="args">Аргументы командной строки.</param>
         static void Main(string[] args)
         {
             Console.WriteLine("1 - боковая поверхность правильной призмы");
@@ -32,6 +39,10 @@ namespace Task_2_1
             }
         }
 
+        /// <summary>
+        /// Запрашивает у пользователя выбор фигуры.
+        /// </summary>
+        /// <returns>Выбранная фигура.</returns>
         static Figure GetFigure()
         {
             while (true)
@@ -45,6 +56,10 @@ namespace Task_2_1
             }
         }
 
+        /// <summary>
+        /// Запрашивает число сторон основания.
+        /// </summary>
+        /// <returns>Число сторон, не меньшее 3.</returns>
         static int GetSides()
         {
             while (true)
@@ -58,6 +73,11 @@ namespace Task_2_1
             }
         }
 
+        /// <summary>
+        /// Запрашивает положительное вещественное число с проверкой ввода.
+        /// </summary>
+        /// <param name="message">Сообщение пользователю.</param>
+        /// <returns>Положительное число.</returns>
         static double GetPositiveNumber(string message)
         {
             while (true)
@@ -71,11 +91,25 @@ namespace Task_2_1
             }
         }
 
+        /// <summary>
+        /// Вычисляет площадь боковой поверхности правильной призмы.
+        /// </summary>
+        /// <param name="sides">Число сторон основания.</param>
+        /// <param name="side">Сторона основания.</param>
+        /// <param name="height">Высота призмы.</param>
+        /// <returns>Площадь боковой поверхности.</returns>
         static double GetPrismArea(int sides, double side, double height)
         {
             return sides * side * height;
         }
 
+        /// <summary>
+        /// Вычисляет площадь боковой поверхности правильной пирамиды.
+        /// </summary>
+        /// <param name="sides">Число сторон основания.</param>
+        /// <param name="side">Сторона основания.</param>
+        /// <param name="apothem">Апофема пирамиды.</param>
+        /// <returns>Площадь боковой поверхности.</returns>
         static double GetPyramidArea(int sides, double side, double apothem)
         {
             return 0.5 * sides * side * apothem;
